@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayoma - Votre Réseau Social</title>
+    <!-- Lien vers Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlzPz1g+P6kS+T8+I/P4gWwz4+G7zL6tL6bK6zQ5eD5u5zF5w5eF5w5eF5w5eF5w5eF5w5eF5w5eF5w5eF5w5eF5w5eF5w5eF5w5eF5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Votre fichier CSS principal -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <!-- Police Google Fonts (peut aussi être importée dans styles.css) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Conteneur global de l'application -->
+    <div class="app-wrapper">
+
+        <!-- En-tête supérieur de l'application (Barre de navigation horizontale) -->
+        <header class="app-header">
+            <div class="container header-content">
+                <div class="logo">
+                    <a href="#" class="nav-button" data-target="feed">Ayoma</a>
+                </div>
+                
+                <!-- Nouvelle section pour la navigation principale horizontale -->
+                <nav class="header-main-nav">
+                    <button class="nav-button active" data-target="feed" title="Fil d'actualité">
+                        <i class="fa-solid fa-newspaper"></i>
+                    </button>
+                    <button class="nav-button" data-target="friends" title="Amis">
+                        <i class="fa-solid fa-user-group"></i>
+                    </button>
+                    <button class="nav-button" data-target="messages" title="Messages">
+                        <i class="fa-solid fa-envelope"></i>
+                    </button>
+                    <button class="nav-button" data-target="notifications" title="Notifications">
+                        <i class="fa-solid fa-bell"></i>
+                    </button>
+                    <button class="nav-button" data-target="profile" title="Mon Profil">
+                        <i class="fa-solid fa-user"></i>
+                    </button>
+                    <button class="nav-button" data-target="settings" title="Paramètres">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+                </nav>
+
+                <div class="header-actions">
+                    <div class="nav-search">
+                        <input type="text" placeholder="Rechercher sur Ayoma...">
+                    </div>
+                    <div class="profile-dropdown-container">
+                        <img src="/img/profile.jpg" alt="Profile Pic" class="profile-pic" id="header-profile-pic">
+                        <div class="profile-dropdown-menu" id="profile-dropdown-menu">
+                            <a href="#" class="dropdown-item nav-button" data-target="profile">
+                                <img src="/img/profile.jpg" alt="Profile Pic" class="dropdown-profile-pic">
+                                <span id="dropdown-username">Votre Nom Actuel</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item nav-button" data-target="settings">
+                                <i class="fa-solid fa-gear"></i> Paramètres et confidentialité
+                            </a>
+                            <a href="#" class="dropdown-item" id="logout-button">
+                                <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Contenu principal de l'application -->
+        <main class="main-content-wrapper">
+            <!-- Conteneur pour les messages dynamiques (succès, erreur, info) -->
+            <div id="message-container" class="message hidden"></div>
+
+            <!-- Section "Fil d'actualité" (par défaut active) -->
+            <section id="feed" class="app-section active">
+                <div class="layout-grid">
+                    <div class="feed-column">
+                        <div class="create-post card">
+                            <h3>Créez votre publication</h3>
+                            <form id="post-form" enctype="multipart/form-data">
+                                <textarea id="post-content" placeholder="Exprimez-vous, que voulez-vous partager ?"></textarea>
+                                <div class="media-upload">
+                                    <label for="media-file" class="upload-button">
+                                        <i class="fa-solid fa-image"></i> Ajouter Photo/Vidéo
+                                    </label>
+                                    <input type="file" id="media-file" accept="image/*,video/*">
+                                    <img id="media-preview" src="" alt="Aperçu média" class="media-preview hidden">
+                                    <span id="selected-media-name">Aucun fichier sélectionné</span>
+                                </div>
+                                <button type="submit">Publier</button>
+                            </form>
+                        </div>
+                        <div id="posts-container" class="posts-list">
+                            <p class="loading-message">Chargement des publications...</p>
+                            <!-- Les publications seront chargées ici par script.js -->
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Droite (reste ici pour le profil résumé et les suggestions sur le fil d'actu) -->
+                    <aside class="sidebar-right">
+                        <div class="profile-card card">
+                            <img src="/img/profile.jpg" alt="Photo de profil" class="profile-pic-large" id="profile-pic">
+                            <h3 id="username">Chargement...</h3>
+                            <p id="bio">Chargement de la bio...</p>
+                            <div class="profile-stats">
+                                <span>Posts: <span id="posts-count">0</span></span>
+                                <span>Abonnés: <span id="followers-count">0</span></span>
+                                <span>Abonnements: <span id="following-count">0</span></span>
+                            </div>
+                            <button class="button nav-button" data-target="profile">Voir mon profil</button>
+                            <button class="button secondary-button" id="edit-profile-btn-sidebar">Éditer le profil</button>
+                        </div>
+                        <div class="suggestions-section card">
+                            <h3>Suggestions d'Amis</h3>
+                            <div id="suggested-users-container" class="users-list">
+                                <p class="loading-message">Chargement des suggestions...</p>
+                                <!-- Les suggestions d'amis seront insérées ici par script.js -->
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </section>
+
+            <!-- Section "Profil" -->
+            <section id="profile" class="app-section">
+                <div id="profile-content" class="card">
+                    <div class="profile-header-section">
+                        <img src="/img/profile.jpg" alt="Your Profile Pic" class="profile-pic-large" id="main-profile-pic">
+                        <h2 id="main-username">Votre Nom d'Utilisateur</h2>
+                        <p id="main-bio">Courte bio ou statut ici. Ex: Développeur web passionné de design UX.</p>
+                        <div class="profile-stats">
+                            <span><strong><span id="main-posts-count">0</span></strong> Publications</span>
+                            <span><strong><span id="main-followers-count">0</span></strong> Abonnés</span>
+                            <span><strong><span id="main-following-count">0</span></strong> Abonnements</span>
+                        </div>
+                        <button class="button" id="edit-profile-btn-main">Éditer le profil</button>
+                    </div>
+                    <h3>Vos Publications</h3>
+                    <div class="user-posts-container" id="main-user-posts-container">
+                        <p class="loading-message">Vos publications s'afficheront ici.</p>
+                        <!-- Les publications de cet utilisateur seront chargées ici par script.js -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section "Amis" -->
+            <section id="friends" class="app-section">
+                <div id="friends-content" class="card">
+                    <h3>Vos Amis et Suggestions</h3>
+                    <div class="search-users">
+                        <input type="text" placeholder="Rechercher des amis ou des personnes..." id="search-users-input">
+                        <button id="search-users-button" class="button"><i class="fa-solid fa-magnifying-glass"></i> Rechercher</button>
+                    </div>
+                    <h4>Demandes d'amis en attente</h4>
+                    <ul class="user-list" id="friend-requests-list">
+                        <p class="loading-message">Aucune demande d'ami en attente.</p>
+                        <!-- Les demandes d'amis seront chargées ici par script.js -->
+                    </ul>
+
+                    <h4>Toutes les personnes / Suggestions</h4>
+                    <ul class="user-list" id="all-users-list">
+                        <p class="loading-message">Recherchez des personnes pour les ajouter ou voir les suggestions.</p>
+                        <!-- Tous les utilisateurs ou suggestions seront chargés ici par script.js -->
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Section "Messages" -->
+            <section id="messages" class="app-section">
+                <div class="messages-page-container card">
+                    <h1>Vos Messages Privés</h1>
+                    <div class="messages-grid">
+                        <div class="conversations-list-column">
+                            <h2>Discussions</h2>
+                            <div id="conversations-list">
+                                <p class="loading-message">Chargement des conversations...</p>
+                                <!-- Les conversations seront chargées ici par script.js -->
+                            </div>
+                        </div>
+                        <div class="chat-column">
+                            <h2 id="current-chat-user">Sélectionnez une conversation</h2>
+                            <div id="chat-messages-container" class="chat-messages-container">
+                                <p class="no-conversation-selected">Cliquez sur une conversation pour commencer.</p>
+                                <!-- Les messages du chat seront insérés ici par JavaScript -->
+                            </div>
+                            <form id="message-input-form" class="message-input-form hidden">
+                                <textarea placeholder="Écrire un message..." class="message-input" rows="1"></textarea>
+                                <button type="submit" class="send-message-button"><i class="fa-solid fa-paper-plane"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section "Notifications" -->
+            <section id="notifications" class="app-section">
+                <div class="notifications-page-container card">
+                    <h1>Vos Notifications</h1>
+                    <ul id="notifications-list" class="users-list">
+                        <p class="loading-message">Chargement des notifications...</p>
+                        <!-- Les notifications seront insérées ici par script.js -->
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Section "Paramètres" (avec mode sombre et déconnexion) -->
+            <section id="settings" class="app-section">
+                <div class="settings-page-container card">
+                    <h1>Paramètres</h1>
+
+                    <div class="settings-section">
+                        <h2>Préférences Générales</h2>
+                        <form id="general-settings-form" class="settings-form">
+                            <div class="form-group">
+                                <label for="username-setting">Nom d'utilisateur :</label>
+                                <input type="text" id="username-setting" placeholder="Votre nom d'utilisateur">
+                            </div>
+                            <div class="form-group">
+                                <label for="bio-setting">Biographie :</label>
+                                <textarea id="bio-setting" rows="3" placeholder="Décrivez-vous ici..."></textarea>
+                            </div>
+                            <button type="submit" class="button">Enregistrer les modifications</button>
+                        </form>
+                    </div>
+
+                    <div class="settings-section">
+                        <h2>Apparence</h2>
+                        <div class="theme-switcher">
+                            <button id="light-mode-button" class="button theme-button">Mode Clair</button>
+                            <button id="dark-mode-button" class="button theme-button">Mode Sombre</button>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h2>Sécurité et Confidentialité</h2>
+                        <ul class="settings-list">
+                            <li><a href="#">Changer le mot de passe</a></li>
+                            <li><a href="#">Gérer la confidentialité</a></li>
+                            <li><a href="#">Activité de connexion</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="settings-section">
+                        <h2>Gestion du Compte</h2>
+                        <!-- Bouton de déconnexion dans les paramètres -->
+                        <button id="logout-button-settings" class="button logout-button">Déconnexion</button>
+                        <button class="button secondary-button" style="margin-top: 10px;">Supprimer le compte</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Pied de page -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2024 Ayoma. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Votre script principal (doit être chargé en premier) -->
+    <script src="/js/script.js"></script>
+
+    <!-- Script JavaScript intégré pour la logique de navigation et le mode sombre -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const appSections = document.querySelectorAll('.app-section');
+            // Cible les boutons de navigation dans l'en-tête ET dans le menu déroulant du profil
+            const navButtons = document.querySelectorAll('.header-main-nav .nav-button, .profile-dropdown-menu .nav-button, .logo .nav-button, .sidebar-right .nav-button'); 
+            const profileDropdownTrigger = document.getElementById('header-profile-pic');
+            const profileDropdownMenu = document.getElementById('profile-dropdown-menu');
+            const logoutButtonDropdown = document.getElementById('logout-button'); // Déconnexion dans dropdown
+            const logoutButtonSettings = document.getElementById('logout-button-settings'); // Déconnexion dans paramètres
+            const lightModeButton = document.getElementById('light-mode-button');
+            const darkModeButton = document.getElementById('dark-mode-button');
+            const messageContainer = document.getElementById('message-container');
+
+            // --- Fonctions utilitaires globales (vérifie si elles existent déjà pour éviter les duplicatas si script.js les définit) ---
+            if (typeof showMessage !== 'function') {
+                window.showMessage = function(message, type) {
+                    if (messageContainer) {
+                        messageContainer.textContent = message;
+                        messageContainer.className = `message ${type}`;
+                        messageContainer.style.display = 'block';
+                        setTimeout(() => {
+                            messageContainer.style.display = 'none';
+                        }, 5000);
+                    } else {
+                        console.warn('Conteneur de message non trouvé. Message:', message, type);
+                    }
+                };
+            }
+            if (typeof getAuthToken !== 'function') {
+                window.getAuthToken = () => localStorage.getItem('authToken');
+            }
+            if (typeof getCurrentUser !== 'function') {
+                window.getCurrentUser = () => {
+                    const userString = localStorage.getItem('currentUser');
+                    return userString ? JSON.parse(userString) : null;
+                };
+            }
+            // --- Fin des fonctions utilitaires ---
+
+
+            // --- Gestion de la Navigation des Sections ---
+            const showSection = (targetId) => {
+                appSections.forEach(section => {
+                    section.classList.remove('active');
+                    section.style.display = 'none'; // Cacher toutes les sections
+                });
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    targetSection.style.display = 'block'; // Afficher la section cible
+                }
+
+                // Mettre à jour l'état actif des boutons de navigation dans l'en-tête
+                // Désactive tous les boutons d'abord
+                document.querySelectorAll('.header-main-nav .nav-button').forEach(button => button.classList.remove('active'));
+                // Active le bouton correspondant dans la barre principale
+                const correspondingNavButton = document.querySelector(`.header-main-nav .nav-button[data-target="${targetId}"]`);
+                if (correspondingNavButton) {
+                    correspondingNavButton.classList.add('active');
+                }
+
+                // Charger les données spécifiques à la section
+                const currentUser = getCurrentUser();
+                if (!currentUser) return; // Ne pas charger si pas connecté
+
+                if (targetId === 'feed') {
+                    if (typeof loadFeedPosts === 'function') loadFeedPosts();
+                    if (typeof loadUserProfileData === 'function') loadUserProfileData('sidebar-right'); // Cible la sidebar de droite
+                    if (typeof loadSuggestedUsers === 'function') loadSuggestedUsers();
+                } else if (targetId === 'profile') {
+                    if (typeof loadUserProfileData === 'function') loadUserProfileData('main'); // Cible la section profil principale
+                    if (typeof loadUserPosts === 'function') loadUserPosts(currentUser.id, 'main-user-posts-container');
+                } else if (targetId === 'friends') {
+                    if (typeof loadSuggestedUsers === 'function') loadSuggestedUsers('full');
+                    if (typeof loadMyFollowingList === 'function') loadMyFollowingList();
+                    if (typeof loadFriendRequests === 'function') loadFriendRequests();
+                } else if (targetId === 'messages') {
+                    if (typeof loadConversations === 'function') loadConversations();
+                    toggleChatView(false); // S'assure que la liste des conversations est visible par défaut sur mobile
+                } else if (targetId === 'settings') {
+                    if (typeof populateSettingsForm === 'function') populateSettingsForm();
+                }
+            };
+
+            // Écoute les clics sur tous les boutons de navigation (y compris le logo et les éléments du dropdown)
+            navButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const targetId = button.getAttribute('data-target');
+                    if (targetId) {
+                        showSection(targetId);
+                        // Cacher le dropdown si un élément du dropdown est cliqué
+                        if (profileDropdownMenu && profileDropdownMenu.classList.contains('active')) {
+                            profileDropdownMenu.classList.remove('active');
+                        }
+                    }
+                });
+            });
+
+            // Gérer le clic sur la photo de profil dans l'en-tête pour ouvrir/fermer le dropdown
+            if (profileDropdownTrigger) {
+                profileDropdownTrigger.addEventListener('click', (event) => {
+                    event.stopPropagation(); // Empêche le clic de se propager au document
+                    profileDropdownMenu.classList.toggle('active');
+                });
+            }
+
+            // Fermer le dropdown si on clique n'importe où ailleurs sur le document
+            document.addEventListener('click', (event) => {
+                if (profileDropdownMenu && profileDropdownMenu.classList.contains('active') && !profileDropdownMenu.contains(event.target) && event.target !== profileDropdownTrigger) {
+                    profileDropdownMenu.classList.remove('active');
+                }
+            });
+
+            // Initialiser la première section visible (Fil d'actualité par défaut)
+            const initialSectionId = window.location.hash ? window.location.hash.substring(1) : 'feed';
+            showSection(initialSectionId);
+
+
+            // --- Gestion du Mode Sombre (boutons) ---
+            const applyDarkModePreference = (mode) => {
+                if (mode === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    localStorage.setItem('darkMode', 'enabled');
+                    darkModeButton.classList.add('active');
+                    lightModeButton.classList.remove('active');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    localStorage.setItem('darkMode', 'disabled');
+                    lightModeButton.classList.add('active');
+                    darkModeButton.classList.remove('active');
+                }
+                // Assurer que le thème des boutons de thème est correct
+                darkModeButton.classList.toggle('active', mode === 'dark');
+                lightModeButton.classList.toggle('active', mode === 'light');
+            };
+
+            // Charger la préférence de l'utilisateur au démarrage
+            const isDarkModeEnabled = localStorage.getItem('darkMode') === 'enabled';
+            applyDarkModePreference(isDarkModeEnabled ? 'dark' : 'light');
+
+            // Écouteurs pour les boutons de mode sombre
+            if (lightModeButton) {
+                lightModeButton.addEventListener('click', () => applyDarkModePreference('light'));
+            }
+            if (darkModeButton) {
+                darkModeButton.addEventListener('click', () => applyDarkModePreference('dark'));
+            }
+
+            // --- Gestion des Boutons de Déconnexion ---
+            const handleLogout = () => {
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('currentUser');
+                showMessage('Déconnexion effectuée ! Redirection...', 'success');
+                setTimeout(() => {
+                    window.location.href = '/connexion.html'; // Redirige vers la page de connexion
+                }, 1500);
+            };
+
+            if (logoutButtonDropdown) {
+                logoutButtonDropdown.addEventListener('click', handleLogout);
+            }
+            if (logoutButtonSettings) {
+                logoutButtonSettings.addEventListener('click', handleLogout);
+            }
+
+            // --- Logique pour masquer/afficher la colonne de chat dans Messages (responsive) ---
+            const conversationsListColumn = document.querySelector('.conversations-list-column');
+            const chatColumn = document.querySelector('.chat-column');
+            const messageInputForm = document.getElementById('message-input-form');
+            const chatHeaderUser = document.getElementById('current-chat-user');
+            const chatMessagesContainer = document.getElementById('chat-messages-container');
+
+            const toggleChatView = (showChat) => {
+                if (window.innerWidth <= 768) { // Détecte si c'est un écran mobile
+                    if (showChat) {
+                        conversationsListColumn.style.display = 'none';
+                        chatColumn.style.display = 'flex';
+                    } else {
+                        conversationsListColumn.style.display = 'flex';
+                        chatColumn.style.display = 'none';
+                    }
+                } else {
+                    // Sur desktop, s'assure que les deux sont visibles
+                    conversationsListColumn.style.display = 'flex';
+                    chatColumn.style.display = 'flex';
+                }
+            };
+
+            if (conversationsListColumn) {
+                conversationsListColumn.addEventListener('click', (event) => {
+                    const conversationItem = event.target.closest('.conversation-item');
+                    if (conversationItem) {
+                        document.querySelectorAll('.conversation-item').forEach(item => item.classList.remove('active'));
+                        conversationItem.classList.add('active');
+
+                        const username = conversationItem.querySelector('.conversation-username').textContent;
+                        chatHeaderUser.textContent = username;
+
+                        // Simule le chargement des messages (remplace par un appel API réel)
+                        chatMessagesContainer.innerHTML = `
+                            <p class="no-conversation-selected" style="display:none;"></p>
+                            <div class="message-bubble received">Salut ${username} !</div>
+                            <div class="message-bubble sent">Bonjour ! Comment ça va ?</div>
+                            <div class="message-bubble received">Ça va bien, merci !</div>
+                        `;
+                        messageInputForm.classList.remove('hidden');
+
+                        toggleChatView(true); // Affiche la colonne de chat
+                    }
+                });
+            }
+
+            // Gérer les soumissions de formulaire (exemple pour settings)
+            const generalSettingsForm = document.getElementById('general-settings-form');
+            if (generalSettingsForm) {
+                generalSettingsForm.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+                    // Ici, vous collecteriez les données du formulaire et les enverriez à votre API
+                    showMessage('Paramètres généraux enregistrés (logique à implémenter) !', 'success');
+                });
+            }
+
+            // Prévisualisation du média lors de la sélection (déjà dans votre script.js, mais doublon pour référence)
+            const mediaFileInput = document.getElementById('media-file');
+            const mediaPreview = document.getElementById('media-preview');
+            const selectedMediaName = document.getElementById('selected-media-name');
+
+            if (mediaFileInput && mediaPreview && selectedMediaName) {
+                mediaFileInput.addEventListener('change', (event) => {
+                    const file = event.target.files[0];
+                    if (file) {
+                        selectedMediaName.textContent = file.name;
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            if (file.type.startsWith('video/')) {
+                                mediaPreview.outerHTML = `<video id="media-preview" controls class="media-preview" src="${e.target.result}"></video>`;
+                            } else {
+                                mediaPreview.outerHTML = `<img id="media-preview" class="media-preview" src="${e.target.result}" alt="Aperçu média">`;
+                            }
+                            document.getElementById('media-preview').classList.remove('hidden');
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        selectedMediaName.textContent = 'Aucun fichier sélectionné';
+                        mediaPreview.outerHTML = `<img id="media-preview" src="" alt="Aperçu média" class="media-preview hidden">`;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inscription - Ayoma</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    </head>
+<body>
+
+    <section id="auth-section">
+        <div class="form-container">
+            <h2>Créez votre compte Ayoma</h2>
+            <form id="register-form" method="POST" action="/api/register">
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur :</label>
+                    <input type="text" id="username" name="username" placeholder="Choisissez un nom d'utilisateur" required autocomplete="username" />
+                </div>
+
+                <div class="form-group">
+                    <label for="firstname">Prénom :</label>
+                    <input type="text" id="firstname" name="firstname" placeholder="Votre prénom" required autocomplete="given-name" />
+                </div>
+
+                <div class="form-group">
+                    <label for="lastname">Nom de famille :</label>
+                    <input type="text" id="lastname" name="lastname" placeholder="Votre nom de famille" required autocomplete="family-name" />
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email :</label>
+                    <input type="email" id="email" name="email" placeholder="Votre adresse email" required autocomplete="email" />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Mot de passe :</label>
+                    <input type="password" id="password" name="password" placeholder="Minimum 6 caractères" minlength="6" required autocomplete="new-password" />
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirmez le mot de passe :</label>
+                    <input type="password" id="confirm-password" name="confirmPassword" placeholder="Confirmez votre mot de passe" minlength="6" required autocomplete="new-password" />
+                </div>
+
+                <div class="form-group">
+                    <label for="dob">Date de naissance :</label>
+                    <input type="date" id="dob" name="dateOfBirth" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="country">Pays :</label>
+                    <select name="countryCode" id="country" required>
+                        <option value="">-- Sélectionnez votre pays --</option>
+                        <option value="+213">Algérie (+213)</option>
+                        <option value="+225">Côte d’Ivoire (+225)</option>
+                        <option value="+237">Cameroun (+237)</option>
+                        <option value="+216">Tunisie (+216)</option>
+                        <option value="+221">Sénégal (+221)</option>
+                        <option value="+241">Gabon (+241)</option>
+                        <option value="+242">Congo (+242)</option>
+                        <option value="+243">RD Congo (+243)</option>
+                        <option value="+245">Guinée-Bissau (+245)</option>
+                        <option value="+248">Seychelles (+248)</option>
+                        <option value="+249">Soudan (+249)</option>
+                        <option value="+250">Rwanda (+250)</option>
+                        <option value="+251">Éthiopie (+251)</option>
+                        <option value="+252">Somalie (+252)</option>
+                        <option value="+253">Djibouti (+253)</option>
+                        <option value="+254">Kenya (+254)</option>
+                        <option value="+255">Tanzanie (+255)</option>
+                        <option value="+256">Ouganda (+256)</option>
+                        <option value="+257">Burundi (+257)</option>
+                        <option value="+258">Mozambique (+258)</option>
+                        <option value="+260">Zambie (+260)</option>
+                        <option value="+261">Madagascar (+261)</option>
+                        <option value="+262">Réunion/Mayotte (+262)</option>
+                        <option value="+263">Zimbabwe (+263)</option>
+                        <option value="+264">Namibie (+264)</option>
+                        <option value="+265">Malawi (+265)</option>
+                        <option value="+266">Lesotho (+266)</option>
+                        <option value="+267">Botswana (+267)</option>
+                        <option value="+268">Eswatini (+268)</option>
+                        <option value="+269">Comores (+269)</option>
+                        <option value="+27">Afrique du Sud (+27)</option>
+                        <option value="+290">Sainte-Hélène (+290)</option>
+                        <option value="+291">Érythrée (+291)</option>
+                        <option value="+297">Aruba (+297)</option>
+                        <option value="+298">Îles Féroé (+298)</option>
+                        <option value="+299">Groenland (+299)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone-number">Numéro de téléphone :</label>
+                    <input type="tel" id="phone-number" name="phoneNumber" placeholder="Ex: +237 6XXXXXXXX" required autocomplete="tel" />
+                </div>
+
+                <button type="submit">S'inscrire</button>
+            </form>
+            <p class="auth-link-text">Déjà un compte ? <a href="connexion.html">Connectez-vous ici</a></p>
+            <div id="message" class="hidden"></div> 
+    </section>
+
+    <script>
+        const countrySelect = document.getElementById("country");
+        const phoneNumberInput = document.getElementById("phone-number");
+
+        // Fonction pour mettre à jour l'indicatif sans effacer le numéro
+        function updatePhoneNumberPrefix() {
+            const countryCode = countrySelect.value;
+            // Récupère la partie du numéro sans l'indicatif actuel
+            const currentNumber = phoneNumberInput.value.replace(/^\+\d+\s*/, '').trim();
+
+            if (countryCode) {
+                // Si l'input n'est pas vide et ne commence pas déjà par l'indicatif du pays sélectionné
+                if (currentNumber && !phoneNumberInput.value.startsWith(countryCode)) {
+                    phoneNumberInput.value = `${countryCode} ${currentNumber}`;
+                } else if (!currentNumber && !phoneNumberInput.value) {
+                    // Si l'input est vide, ajoute juste l'indicatif
+                    phoneNumberInput.value = `${countryCode} `;
+                }
+            } else if (!countryCode && phoneNumberInput.value.match(/^\+\d+\s*/)) {
+                // Si aucun pays n'est sélectionné mais qu'un indicatif est présent, le supprime
+                phoneNumberInput.value = currentNumber;
+            }
+        }
+
+        countrySelect.addEventListener("change", updatePhoneNumberPrefix);
+
+        phoneNumberInput.addEventListener("focus", () => {
+            // S'assure que l'indicatif est là quand l'utilisateur clique sur le champ
+            if (countrySelect.value && !phoneNumberInput.value.startsWith(countrySelect.value)) {
+                updatePhoneNumberPrefix();
+            }
+        });
+
+        // Empêcher l'utilisateur de supprimer l'indicatif facilement
+        phoneNumberInput.addEventListener("keydown", (event) => {
+            const countryCode = countrySelect.value;
+            // Si l'indicatif est présent et que l'utilisateur essaie de le supprimer en allant trop à gauche
+            if (countryCode && event.key === "Backspace" && phoneNumberInput.selectionStart <= countryCode.length + 1) {
+                event.preventDefault();
+            }
+        });
+
+        // Appeler la fonction une fois au chargement pour définir l'indicatif initial si un pays est déjà sélectionné
+        document.addEventListener('DOMContentLoaded', updatePhoneNumberPrefix);
+    </script>
+
+    <script src="/js/inscription.js"></script>
+</body>
+</html>

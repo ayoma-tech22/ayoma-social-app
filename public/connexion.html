@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connexion - Ayoma</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <section id="auth-section">
+        <div class="form-container">
+            <h2>Connectez-vous à Ayoma</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="identifier">Email ou Nom d'utilisateur :</label>
+                    <input type="text" id="identifier" name="identifier" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Mot de passe :</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <button type="submit">Se connecter</button>
+            </form>
+            <p class="auth-link-text">Pas encore de compte ?
+                <a href="/inscription.html" id="register-link">Inscrivez-vous ici</a>
+            </p>
+            <div id="message" class="hidden"></div>
+        </div>
+    </section>
+
+    <script src="/js/connexion.js"></script>
+</body>
+</html>

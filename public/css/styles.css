@@ -1,0 +1,1788 @@
+/*
+ * Fichier: public/css/styles.css
+ * Description: Styles CSS pour l'application de réseau social Ayoma, inspirés de Facebook.
+ * Version: 6.0 (Navigation horizontale dans l'en-tête, suppression de la sidebar gauche, layout ajusté)
+ */
+
+/* --- Variables de couleur --- */
+:root {
+    --ayoma-blue: #007bff; /* Bleu principal Ayoma */
+    --ayoma-green: #28a745; /* Vert pour les succès/boutons positifs */
+    --light-grey: #F0F2F5; /* Arrière-plan clair, souvent utilisé par Facebook */
+    --medium-grey: #CED0D4; /* Bordures, séparateurs */
+    --dark-grey: #65676B; /* Texte secondaire, icônes */
+    --text-color-light: #050505; /* Texte principal clair (pour mode jour) */
+    --text-color-dark: #FFFFFF; /* Texte principal foncé (pour mode nuit) */
+    --white: #FFFFFF;
+    --red-error: #dc3545; /* Rouge pour les erreurs/actions négatives */
+    --shadow-color: rgba(0, 0, 0, 0.1); /* Ombre légère pour les cartes */
+    --border-radius-card: 8px; /* Rayon de bordure pour les cartes/conteneurs */
+    --font-family-primary: 'Roboto', sans-serif;
+
+    /* Couleurs mode jour par défaut */
+    --bg-primary: var(--light-grey);
+    --bg-secondary: var(--white);
+    --text-primary: var(--text-color-light);
+    --text-secondary: var(--dark-grey);
+    --border-color: var(--medium-grey);
+    --card-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* --- Mode Sombre (Dark Mode) --- */
+body.dark-mode {
+    --bg-primary: #18191a; /* Fond principal sombre */
+    --bg-secondary: #242526; /* Fond des cartes sombre */
+    --text-primary: var(--text-color-dark); /* Texte blanc */
+    --text-secondary: #b0b3b8; /* Texte secondaire gris clair */
+    --border-color: #3e4042; /* Bordures sombres */
+    --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); /* Ombre plus prononcée */
+
+    color: var(--text-primary);
+}
+
+body.dark-mode .app-header, /* Mise à jour pour le nouvel header */
+body.dark-mode .card,
+body.dark-mode .create-post-section,
+body.dark-mode .post,
+body.dark-mode .messages-grid,
+body.dark-mode .conversations-list-column,
+body.dark-mode .chat-column {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+}
+
+body.dark-mode .app-header { /* Bordure du bas de l'header en mode sombre */
+    border-bottom-color: var(--border-color);
+}
+
+/* Nouvel élément: boutons de navigation dans l'en-tête */
+body.dark-mode .header-main-nav .nav-button {
+    color: var(--text-secondary);
+}
+body.dark-mode .header-main-nav .nav-button:hover,
+body.dark-mode .header-main-nav .nav-button.active {
+    background-color: #3a3b3c; /* Fond au survol/actif */
+    color: var(--ayoma-blue); /* Couleur de l'icône */
+}
+body.dark-mode .header-main-nav .nav-button.active::after { /* Ligne du bas active */
+    background-color: var(--ayoma-blue);
+}
+
+
+body.dark-mode .logo a { /* Cibler le lien directement pour le logo */
+    color: var(--ayoma-blue);
+}
+
+body.dark-mode input,
+body.dark-mode textarea {
+    background-color: #3a3b3c;
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: var(--text-secondary);
+}
+body.dark-mode input:focus,
+body.dark-mode textarea:focus {
+    border-color: var(--ayoma-blue);
+    box-shadow: 0 0 0 1px var(--ayoma-blue);
+}
+
+body.dark-mode .comments-section .comment-item,
+body.dark-mode .media-upload { /* Mise à jour de .media-upload-area vers .media-upload */
+    background-color: #3a3b3c;
+}
+
+body.dark-mode .comment-input {
+    background-color: #3a3b3c;
+    border: none;
+}
+body.dark-mode .comment-input:focus {
+    border: 1px solid var(--ayoma-blue);
+}
+
+body.dark-mode .post-content p,
+body.dark-mode .post-header .username,
+body.dark-mode .post-header .post-timestamp,
+body.dark-mode .comment-username,
+body.dark-mode .comment-content,
+body.dark-mode .comment-timestamp,
+body.dark-mode .profile-card h3, /* Pour la sidebar-right */
+body.dark-mode .profile-card p, /* Pour la sidebar-right */
+body.dark-mode .profile-stats span,
+body.dark-mode .profile-stats span span,
+body.dark-mode .settings-section h2,
+body.dark-mode .settings-form label,
+body.dark-mode .user-card .username,
+body.dark-mode .user-card .user-bio,
+body.dark-mode .chat-column h2,
+body.dark-mode .conversation-item .conversation-username,
+body.dark-mode .conversation-item .last-message-preview,
+body.dark-mode .no-conversation-selected,
+body.dark-mode .loading-message,
+body.dark-mode .no-posts {
+    color: var(--text-primary);
+}
+
+body.dark-mode .post-actions button,
+body.dark-mode .upload-button,
+body.dark-mode .setting-action-button /* Nouveau: pour les boutons des paramètres */ {
+    color: var(--text-secondary);
+}
+body.dark-mode .post-actions button:hover,
+body.dark-mode .upload-button:hover,
+body.dark-mode .setting-action-button:hover {
+    background-color: #3a3b3c;
+}
+body.dark-mode .button.secondary-button { /* Pour les boutons gris */
+    background-color: #4a4b4c;
+    color: var(--text-primary);
+}
+body.dark-mode .button.secondary-button:hover {
+    background-color: #5a5c5e;
+}
+
+
+body.dark-mode .post-actions .like-button.liked {
+    color: var(--ayoma-blue);
+}
+body.dark-mode .message-bubble.received {
+    background-color: #3a3b3c;
+}
+body.dark-mode .main-footer {
+    background-color: #1c1e21;
+    color: var(--text-secondary);
+}
+
+body.dark-mode .dropdown-item { /* Éléments du menu déroulant du profil */
+    color: var(--text-primary);
+}
+body.dark-mode .dropdown-item:hover {
+    background-color: #3a3b3c;
+}
+body.dark-mode .dropdown-divider {
+    border-top-color: var(--border-color);
+}
+body.dark-mode .profile-dropdown-menu {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    box-shadow: var(--card-shadow);
+}
+
+
+/* --- Réinitialisation de base et typographie --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: var(--font-family-primary);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: var(--ayoma-blue);
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+}
+
+input, textarea {
+    font-family: inherit;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+input:focus, textarea:focus {
+    border-color: var(--ayoma-blue);
+    box-shadow: 0 0 0 1px var(--ayoma-blue);
+}
+
+/* --- Conteneur global de l'application --- */
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* --- Styles des conteneurs génériques --- */
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.main-content-wrapper { /* Conteneur pour toutes les sections principales */
+    flex-grow: 1;
+    padding: 30px 0; /* Espacement vertical général du contenu */
+}
+
+.card {
+    background-color: var(--bg-secondary);
+    padding: 20px;
+    border-radius: var(--border-radius-card);
+    box-shadow: var(--card-shadow);
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+}
+
+/* --- Conteneur de messages (notifications success/error/info) --- */
+#message-container {
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    display: none;
+}
+
+#message-container.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+#message-container.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+#message-container.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* --- Styles des boutons génériques --- */
+.button {
+    display: inline-block;
+    background-color: var(--ayoma-blue);
+    color: var(--white);
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: bold; /* Tous les boutons sont en gras */
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px); /* Léger effet au survol */
+}
+
+.secondary-button {
+    background-color: var(--medium-grey);
+    color: var(--text-primary);
+}
+
+.secondary-button:hover {
+    background-color: #B0B3B8;
+}
+
+/* Boutons d'action dans les sections de paramètres */
+.setting-action-button {
+    background-color: var(--medium-grey);
+    color: var(--text-primary);
+    padding: 10px 15px;
+    border-radius: 5px;
+    width: auto;
+    margin-bottom: 10px; /* Espace entre les boutons d'action */
+    display: block; /* Chaque bouton sur sa propre ligne */
+    text-align: left; /* Texte aligné à gauche */
+}
+.setting-action-button:hover {
+    background-color: #B0B3B8;
+}
+.setting-action-button.danger {
+    background-color: var(--red-error);
+    color: var(--white);
+}
+.setting-action-button.danger:hover {
+    background-color: #c82333;
+}
+
+
+/* --- Styles des photos de profil --- */
+.profile-pic { /* Générique pour toutes les petites photos de profil */
+    width: 38px; /* Taille légèrement augmentée pour l'en-tête */
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid var(--border-color); /* Bordure subtile */
+}
+body.dark-mode .profile-pic {
+    border-color: #3a3b3c;
+}
+
+.profile-pic-small { /* Utilisé dans les listes d'utilisateurs (ex: suggestions) */
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.profile-pic-medium { /* Pour les avatars dans les posts */
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.profile-pic-large { /* Pour les grandes photos de profil */
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--white);
+    box-shadow: 0 0 0 1px var(--medium-grey);
+    margin-bottom: 15px;
+}
+body.dark-mode .profile-pic-large {
+    border-color: #242526;
+}
+
+.users-list { /* Style générique pour les listes d'utilisateurs/items */
+    margin-top: 15px;
+    list-style: none; /* Supprime les puces */
+    padding: 0;
+}
+
+.user-card { /* Style générique pour un élément utilisateur dans une liste (amis, suggestions, notifications) */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.user-card:hover {
+    background-color: var(--light-grey);
+}
+body.dark-mode .user-card:hover {
+    background-color: #3a3b3c;
+}
+
+.user-card:last-child {
+    border-bottom: none;
+}
+
+.user-card .username {
+    font-weight: bold;
+    color: var(--text-primary);
+    flex-grow: 1;
+}
+
+.user-card .user-bio {
+    font-size: 0.85em;
+    color: var(--text-secondary);
+}
+
+
+/* --- En-tête de l'application (Barre de navigation horizontale de type Facebook) --- */
+.app-header {
+    background-color: var(--bg-secondary);
+    padding: 10px 0; /* Padding vertical ajusté */
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--card-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.app-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px; /* Espace entre les blocs principaux de l'en-tête */
+}
+
+.app-header .logo a {
+    color: var(--ayoma-blue);
+    font-size: 1.8em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    flex-shrink: 0; /* Empêche le logo de rétrécir */
+}
+.app-header .logo a:hover {
+    text-decoration: none;
+}
+
+.header-main-nav { /* La nouvelle navigation principale horizontale */
+    display: flex;
+    justify-content: center;
+    flex-grow: 1; /* Prend l'espace disponible au centre */
+    gap: 2px; /* Espacement minime entre les boutons de navigation */
+}
+
+.header-main-nav .nav-button {
+    background-color: transparent; /* Fond transparent par défaut */
+    color: var(--dark-grey); /* Couleur des icônes */
+    padding: 10px 20px; /* Padding généreux pour les zones cliquables */
+    border-radius: 8px; /* Coins arrondis */
+    font-size: 1.4em; /* Taille des icônes */
+    transition: background-color 0.2s ease, color 0.2s ease;
+    position: relative; /* Pour la ligne active */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px; /* Largeur fixe pour les boutons icônes */
+    height: 50px; /* Hauteur fixe pour les boutons icônes */
+}
+
+.header-main-nav .nav-button:hover {
+    background-color: var(--light-grey);
+    color: var(--ayoma-blue);
+}
+
+.header-main-nav .nav-button.active {
+    background-color: var(--light-grey); /* Fond actif */
+    color: var(--ayoma-blue); /* Couleur de l'icône active */
+}
+
+.header-main-nav .nav-button.active::after { /* Ligne bleue sous l'icône active */
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -10px; /* Déplace la ligne plus bas */
+    height: 3px;
+    background-color: var(--ayoma-blue);
+    border-radius: 2px;
+}
+body.dark-mode .header-main-nav .nav-button.active::after {
+    background-color: var(--ayoma-blue);
+}
+
+/* Actions à droite de l'en-tête (recherche, dropdown profil) */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espace entre recherche et dropdown */
+    flex-shrink: 0;
+}
+
+.nav-search {
+    flex-grow: 1; /* Permet à la barre de recherche de prendre de la place */
+    max-width: 250px; /* Largeur maximale pour la recherche */
+}
+.nav-search input {
+    background-color: var(--light-grey);
+    border: none;
+    border-radius: 20px; /* Bordures très arrondies */
+    padding: 8px 15px;
+    font-size: 0.9em;
+    color: var(--text-primary);
+}
+body.dark-mode .nav-search input {
+    background-color: #3a3b3c;
+    color: var(--text-primary);
+}
+.nav-search input:focus {
+    background-color: var(--white);
+    border: 1px solid var(--ayoma-blue);
+    box-shadow: none;
+}
+body.dark-mode .nav-search input:focus {
+    background-color: var(--bg-secondary);
+}
+
+/* Dropdown de profil dans l'en-tête */
+.profile-dropdown-container {
+    position: relative;
+    cursor: pointer;
+}
+.profile-dropdown-container .profile-pic {
+    border: 2px solid transparent; /* Pas de bordure par défaut */
+    transition: border-color 0.2s ease;
+}
+.profile-dropdown-container .profile-pic:hover {
+    border-color: var(--ayoma-blue); /* Bordure au survol */
+}
+
+.profile-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px); /* Positionne sous la photo de profil */
+    right: 0; /* Aligné à droite */
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-card);
+    box-shadow: var(--card-shadow);
+    min-width: 250px;
+    padding: 10px 0;
+    z-index: 1001;
+    display: none; /* Masqué par défaut, géré par JS */
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.profile-dropdown-menu.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.profile-dropdown-menu .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+.profile-dropdown-menu .dropdown-item:hover {
+    background-color: var(--light-grey);
+    text-decoration: none;
+}
+.profile-dropdown-menu .dropdown-item i { /* Icônes des éléments du dropdown */
+    width: 20px; /* Taille fixe pour les icônes */
+    text-align: center;
+    color: var(--text-secondary);
+}
+.profile-dropdown-menu .dropdown-profile-pic {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.profile-dropdown-menu .dropdown-divider {
+    border-top: 1px solid var(--border-color);
+    margin: 5px 0;
+}
+
+
+/* --- Contenu principal de l'application (Sections) --- */
+/* Pas de sidebar latérale gauche, donc pas de grid ici pour le app-content */
+.app-content {
+    /* Cet élément n'est plus une grille complexe car la sidebar gauche a été retirée */
+    /* Il agit simplement comme un conteneur pour le main-content-wrapper */
+}
+
+
+/* --- Styles des sections de l'application (Accueil, Fil, Messages, etc.) --- */
+.app-section {
+    display: none; /* Masqué par défaut, géré par JS */
+    padding-bottom: 20px;
+}
+
+.app-section.active {
+    display: block; /* La section active est affichée */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+    margin-bottom: 15px;
+}
+
+/* --- Section Accueil --- */
+.welcome-card {
+    text-align: center;
+    padding: 40px 20px;
+}
+.welcome-card h2 {
+    font-size: 2.2em;
+    color: var(--ayoma-blue);
+    margin-bottom: 15px;
+}
+.welcome-card p {
+    font-size: 1.1em;
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+}
+.welcome-card .quick-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+
+/* --- Section Fil d'actualité (layout en grille avec sidebar droite) --- */
+.layout-grid { /* Cette grille ne concerne que la section feed */
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Colonne principale (fil) et colonne latérale */
+    gap: 25px;
+}
+
+.feed-column {
+    /* Conteneur pour le formulaire de post et les publications */
+}
+
+.sidebar-right {
+    /* Conteneur pour le profil résumé et les suggestions */
+}
+
+/* --- Section "Créer une publication" --- */
+.create-post { /* Renommé de .create-post-section */
+    /* Utilise déjà .card */
+}
+
+.create-post form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.create-post textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.media-upload { /* Renommé de .media-upload-area */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--light-grey);
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+body.dark-mode .media-upload {
+    background-color: #3a3b3c;
+    border-color: #4a4b4c;
+}
+
+.upload-button { /* Label pour l'input file */
+    background-color: transparent;
+    color: var(--text-secondary);
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95em;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.upload-button:hover {
+    background-color: var(--medium-grey);
+}
+body.dark-mode .upload-button:hover {
+    background-color: #4a4b4c;
+}
+
+.upload-button i { /* Icône dans le bouton d'upload */
+    margin-right: 5px;
+    color: var(--dark-grey);
+}
+body.dark-mode .upload-button i {
+    color: var(--text-secondary);
+}
+
+.media-upload input[type="file"] {
+    display: none; /* Cache l'input file par défaut */
+}
+
+.media-preview {
+    max-width: 100px;
+    max-height: 100px;
+    object-fit: contain;
+    border-radius: 4px;
+    display: block;
+    margin-left: auto;
+}
+
+.media-preview.hidden {
+    display: none;
+}
+
+#selected-media-name {
+    font-size: 0.9em;
+    color: var(--dark-grey);
+    margin-left: 10px;
+}
+body.dark-mode #selected-media-name {
+    color: var(--text-secondary);
+}
+
+.create-post button[type="submit"] { /* Pour le bouton "Publier" */
+    background-color: var(--ayoma-blue);
+    color: var(--white);
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.create-post button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* --- Styles pour une publication individuelle --- */
+.post {
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius-card);
+    box-shadow: var(--card-shadow);
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.post-header .profile-pic { /* Photo de profil de l'auteur du post */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.post-header .post-info {
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+}
+
+.post-header .post-author {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: var(--text-primary);
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.post-header .post-author:hover {
+    text-decoration: underline;
+}
+
+.post-header .follow-button {
+    background-color: var(--ayoma-blue);
+    color: var(--white);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.85em;
+    flex-shrink: 0;
+}
+.post-header .follow-button:hover {
+    background-color: #0056b3;
+}
+.post-header .follow-button.followed {
+    background-color: var(--medium-grey);
+    color: var(--dark-grey);
+}
+body.dark-mode .post-header .follow-button.followed {
+    background-color: #4a4b4c;
+    color: var(--text-secondary);
+}
+.post-header .follow-button.followed:hover {
+    background-color: #B0B3B8;
+}
+body.dark-mode .post-header .follow-button.followed:hover {
+    background-color: #5a5c5e;
+}
+
+
+.post-header .post-timestamp {
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    margin-left: auto;
+    flex-basis: 100%;
+    text-align: right;
+}
+
+.post-content p {
+    margin-bottom: 10px;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* --- RÈGLES CRITIQUES POUR LES MÉDIAS (IMAGES/VIDÉOS) --- */
+.post-media {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    margin: 10px auto 0;
+    object-fit: contain;
+}
+
+.post-actions {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 10px;
+}
+
+.post-actions button {
+    background-color: transparent;
+    color: var(--text-secondary);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.post-actions button:hover {
+    background-color: var(--light-grey);
+}
+body.dark-mode .post-actions button:hover {
+    background-color: #3a3b3c;
+}
+
+.post-actions .like-button.liked {
+    color: var(--ayoma-blue);
+    font-weight: bold;
+}
+.post-actions .like-button.liked i {
+    color: var(--red-error);
+}
+
+/* --- Commentaires --- */
+.comments-section {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+.comments-section.hidden {
+    display: none;
+}
+
+.comments-section .comments-list {
+    max-height: 180px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding-right: 5px;
+}
+
+.comments-section .comment-item {
+    display: flex;
+    align-items: flex-start;
+    background-color: var(--light-grey);
+    border-radius: 18px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    font-size: 0.85em;
+}
+body.dark-mode .comments-section .comment-item {
+    background-color: #3a3b3c;
+}
+
+.comments-section .comment-username {
+    font-weight: bold;
+    margin-right: 5px;
+    color: var(--text-primary);
+}
+
+.comments-section .comment-content {
+    word-wrap: break-word;
+    color: var(--text-primary);
+}
+
+.comments-section .comment-timestamp {
+    font-size: 0.7em;
+    color: var(--text-secondary);
+    margin-left: auto;
+    align-self: flex-end;
+}
+
+.comments-section .add-comment-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.comments-section .comment-input {
+    flex-grow: 1;
+    border-radius: 18px;
+    padding: 8px 15px;
+    background-color: var(--light-grey);
+    border: none;
+}
+body.dark-mode .comments-section .comment-input {
+    background-color: #3a3b3c;
+}
+
+.comments-section .comment-input:focus {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--ayoma-blue);
+}
+
+.comments-section .send-comment-button {
+    background-color: var(--ayoma-blue);
+    color: var(--white);
+    border-radius: 18px;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.comments-section .send-comment-button:hover {
+    background-color: #0056b3;
+}
+
+.no-comments, .loading-message, .error-message {
+    text-align: center;
+    color: var(--text-secondary);
+    font-style: italic;
+    padding: 10px;
+}
+
+/* --- Sidebar droite (dans la section Fil d'actualité) --- */
+.sidebar-right .profile-card {
+    text-align: center;
+}
+.sidebar-right .profile-card .username {
+    margin-top: 10px;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: var(--text-primary);
+}
+.sidebar-right .profile-card .bio {
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+}
+.sidebar-right .profile-card .profile-stats {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    font-size: 0.9em;
+}
+.sidebar-right .profile-card .profile-stats span {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    color: var(--text-primary);
+}
+.sidebar-right .profile-card .profile-stats span span {
+    font-weight: normal;
+    color: var(--text-secondary);
+    font-size: 0.9em;
+}
+.sidebar-right .suggestions-section {
+    /* Utilise déjà .card */
+}
+
+
+/* --- Styles spécifiques aux sections (Amis, Messages, Notifications, Profil, Paramètres) --- */
+
+/* Ces sections prennent toute la largeur disponible du main-content-wrapper */
+.friends-page-container,
+.messages-page-container,
+.notifications-page-container,
+.profile-page-container,
+.settings-page-container {
+    padding: 30px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto; /* Centre ces conteneurs dans le main-content-wrapper */
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 25px;
+    color: var(--ayoma-blue);
+    text-align: center;
+}
+h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+    text-align: left;
+}
+h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+    text-align: left;
+}
+
+
+/* --- Section Amis --- */
+.friends-page-container hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 30px 0;
+}
+.search-users {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.search-users input {
+    flex-grow: 1;
+    border-radius: 20px;
+    padding: 8px 15px;
+}
+.search-users button {
+    padding: 8px 15px;
+    border-radius: 20px;
+    background-color: var(--ayoma-blue);
+    color: var(--white);
+}
+.search-users button i {
+    margin-right: 5px;
+}
+
+/* --- Section Messages --- */
+.messages-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Liste des conversations à gauche, chat à droite */
+    gap: 20px;
+    min-height: 500px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-card);
+    overflow: hidden;
+}
+
+.conversations-list-column {
+    background-color: var(--bg-secondary);
+    padding: 15px;
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+body.dark-mode .conversations-list-column {
+    background-color: var(--bg-secondary);
+    border-right-color: var(--border-color);
+}
+
+
+.conversations-list-column h2 {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    text-align: left;
+}
+
+.conversation-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.conversation-item:hover, .conversation-item.active {
+    background-color: var(--light-grey);
+}
+body.dark-mode .conversation-item:hover, body.dark-mode .conversation-item.active {
+    background-color: #3a3b3c;
+}
+
+.conversation-item.active {
+    font-weight: bold;
+    border-left: 3px solid var(--ayoma-blue);
+    padding-left: 7px;
+}
+
+.conversation-item .conversation-info {
+    flex-grow: 1;
+}
+
+.conversation-item .conversation-username {
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+.conversation-item .last-message-preview {
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-column {
+    background-color: var(--bg-secondary);
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-column h2 { /* Header du chat avec le nom de l'interlocuteur */
+    font-size: 1.2em;
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+    text-align: left;
+}
+
+.chat-messages-container {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.no-conversation-selected {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-top: 50px;
+}
+
+.message-bubble {
+    padding: 10px 15px;
+    border-radius: 18px;
+    max-width: 75%;
+    word-wrap: break-word;
+}
+
+.message-bubble.sent {
+    background-color: var(--ayoma-blue);
+    color: var(--white);
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+}
+
+.message-bubble.received {
+    background-color: var(--light-grey);
+    color: var(--text-primary);
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+}
+body.dark-mode .message-bubble.received {
+    background-color: #3a3b3c;
+}
+
+.message-input-form {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    border-top: 1px solid var(--border-color);
+}
+.message-input-form.hidden {
+    display: none;
+}
+
+.message-input-form textarea {
+    flex-grow: 1;
+    border-radius: 18px;
+    min-height: 40px;
+    max-height: 100px;
+    resize: vertical;
+    padding: 10px 15px;
+}
+
+.message-input-form .send-message-button {
+    background-color: var(--ayoma-blue);
+    color: var(--white);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    flex-shrink: 0;
+}
+.message-input-form .send-message-button i { /* Icône dans le bouton envoyer */
+    color: var(--white);
+}
+
+.message-input-form .send-message-button:hover {
+    background-color: #0056b3;
+}
+
+
+/* --- Section Notifications --- */
+.notifications-page-container h1 {
+    /* Utilise le H1 générique */
+}
+.notification-item { /* Utilise .user-card comme base */
+    align-items: flex-start; /* Aligne le texte en haut si plusieurs lignes */
+    padding-left: 0;
+    padding-right: 0;
+}
+.notification-item .profile-pic-small {
+    margin-right: 10px;
+}
+.notification-item .notification-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.notification-item .notification-text {
+    font-weight: normal;
+    color: var(--text-primary);
+}
+.notification-item .notification-text strong {
+    font-weight: bold;
+    color: var(--ayoma-blue);
+}
+.notification-item .notification-time {
+    font-size: 0.8em;
+    color: var(--text-secondary);
+    margin-top: 3px;
+}
+.notification-item .notification-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+.notification-item .notification-actions .button {
+    padding: 6px 10px;
+    font-size: 0.8em;
+    width: auto;
+}
+
+
+/* --- Section Profil --- */
+.profile-page-container {
+    text-align: center;
+}
+.profile-header-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.profile-header-section h2 {
+    font-size: 2em;
+    margin-bottom: 5px;
+    color: var(--text-primary);
+    text-align: center;
+}
+.profile-header-section p { /* Bio */
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+}
+
+.profile-page-container .profile-stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    color: var(--text-secondary);
+}
+.profile-page-container .profile-stats span strong {
+    color: var(--text-primary);
+}
+
+.edit-profile-btn { /* Bouton éditer le profil */
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.profile-page-container h3 { /* "Vos publications" */
+    font-size: 1.5em;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    text-align: left;
+}
+.user-posts-container { /* Conteneur des posts d'un utilisateur, peut être dans la section profil ou autre */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+/* --- Section Paramètres --- */
+.settings-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.settings-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.settings-section h2 {
+    font-size: 1.3em;
+    margin-bottom: 20px;
+    color: var(--ayoma-blue);
+    text-align: left;
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.settings-form .form-group {
+    text-align: left;
+}
+
+.settings-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+.theme-switcher { /* Styles pour les boutons Mode Clair/Sombre */
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.theme-switcher .theme-button {
+    flex-grow: 1; /* Les boutons prennent l'espace disponible */
+    padding: 10px 15px;
+    border-radius: 6px;
+    background-color: var(--medium-grey);
+    color: var(--text-primary);
+    font-weight: bold;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.theme-switcher .theme-button:hover {
+    background-color: #B0B3B8;
+}
+.theme-switcher .theme-button.active {
+    background-color: var(--ayoma-blue);
+    color: var(--white);
+}
+.theme-switcher .theme-button.active:hover {
+    background-color: #0056b3;
+}
+
+
+/* --- Pied de page --- */
+.main-footer {
+    background-color: var(--text-color-light);
+    color: var(--white);
+    text-align: center;
+    padding: 20px 0;
+    margin-top: auto;
+    flex-shrink: 0;
+}
+body.dark-mode .main-footer {
+    background-color: #1c1e21;
+    color: var(--text-secondary);
+}
+
+
+/* --- Responsive Design (Media Queries) --- */
+
+/* Pour les écrans plus petits (mobiles) */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 10px;
+    }
+
+    /* HEADER: Toujours en haut, mais plus compact et aligné différemment */
+    .app-header {
+        padding: 8px 0;
+    }
+
+    .app-header .container {
+        flex-wrap: wrap; /* Permet aux éléments de passer à la ligne */
+        justify-content: center; /* Centre les éléments */
+        gap: 10px; /* Moins d'espace */
+        padding: 0 10px;
+    }
+
+    .app-header .logo {
+        flex-basis: 100%; /* Le logo prend toute la largeur */
+        text-align: center;
+        order: 1; /* Ordre d'affichage */
+    }
+    .app-header .logo a {
+        font-size: 1.5em; /* Taille du logo plus petite */
+    }
+
+    .header-main-nav { /* La navigation principale horizontale sur mobile */
+        order: 3; /* Place la nav sous la recherche et le profil */
+        flex-basis: 100%; /* Prend toute la largeur */
+        justify-content: space-around; /* Distribue les boutons uniformément */
+        border-top: 1px solid var(--border-color); /* Séparateur */
+        padding-top: 8px; /* Padding au-dessus de la ligne */
+        margin-top: 8px; /* Marge au-dessus */
+        overflow-x: auto; /* Permet le défilement horizontal si trop de boutons */
+        -webkit-overflow-scrolling: touch;
+    }
+    body.dark-mode .header-main-nav {
+        border-top-color: var(--border-color);
+    }
+
+    .header-main-nav .nav-button {
+        padding: 8px 15px; /* Padding ajusté pour mobile */
+        font-size: 1.2em; /* Icônes plus petites */
+        width: auto; /* Largeur automatique */
+        height: auto;
+        flex-shrink: 0; /* Empêche de rétrécir */
+    }
+
+    .header-main-nav .nav-button.active::after {
+        bottom: -5px; /* Ajuste la ligne active */
+    }
+
+    .header-actions {
+        order: 2; /* Recherche et profil à côté du logo */
+        flex-grow: 1; /* Prend l'espace disponible */
+        justify-content: space-between; /* Espace recherche et profil */
+        gap: 10px;
+    }
+
+    .nav-search {
+        flex-grow: 1;
+        max-width: none; /* Pas de max-width sur mobile */
+    }
+    .nav-search input {
+        padding: 6px 12px; /* Padding réduit */
+        font-size: 0.85em;
+    }
+
+    .profile-dropdown-container .profile-pic {
+        width: 32px; /* Réduit la photo de profil */
+        height: 32px;
+    }
+    .profile-dropdown-menu {
+        min-width: 200px; /* Plus petit menu déroulant */
+    }
+    .profile-dropdown-menu .dropdown-item {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+    .profile-dropdown-menu .dropdown-profile-pic {
+        width: 28px;
+        height: 28px;
+    }
+    .profile-dropdown-menu .dropdown-item i {
+        width: 18px; /* Icônes plus petites */
+    }
+
+
+    /* Ajustement du body pour compenser le header sticky */
+    body {
+        padding-top: 140px; /* Hauteur estimée du header mobile avec logo, recherche, nav en dessous */
+        /* Vous devrez ajuster cette valeur si le header semble trop haut ou coupe le contenu */
+    }
+
+    .main-content-wrapper {
+        padding: 10px 0;
+    }
+
+    .layout-grid {
+        grid-template-columns: 1fr; /* Une seule colonne sur mobile */
+        gap: 15px;
+    }
+
+    .sidebar-right {
+        /* S'affichera en dessous du fil d'actualité, reste une card */
+    }
+
+    .card {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    /* Publications et Formulaire de Post (ajustements pour mobile) */
+    .create-post h3 {
+        font-size: 1.3em;
+    }
+    .create-post textarea {
+        min-height: 60px;
+        font-size: 0.9em;
+    }
+    .media-upload {
+        padding: 6px 10px;
+    }
+    .upload-button {
+        font-size: 0.85em;
+    }
+    .media-preview {
+        max-width: 70px;
+        max-height: 70px;
+    }
+    #selected-media-name {
+        font-size: 0.8em;
+    }
+    .create-post button[type="submit"] {
+        padding: 8px 12px;
+        font-size: 1em;
+    }
+
+    .post {
+        padding: 12px;
+    }
+    .post-header .profile-pic {
+        width: 35px;
+        height: 35px;
+    }
+    .post-header .post-author {
+        font-size: 1em;
+    }
+    .post-content p {
+        font-size: 0.9em;
+    }
+    .post-actions button {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+    .comments-section .comment-item {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+    .comments-section .comment-input {
+        padding: 8px 12px;
+        font-size: 0.85em;
+    }
+    .comments-section .send-comment-button {
+        font-size: 0.85em;
+        padding: 8px 12px;
+    }
+
+    /* Sidebar droite (Profil résumé sur le fil) */
+    .sidebar-right .profile-card .profile-pic-large {
+        width: 80px;
+        height: 80px;
+    }
+    .sidebar-right .profile-card .username {
+        font-size: 1.1em;
+    }
+    .sidebar-right .profile-card .profile-stats {
+        gap: 10px;
+        font-size: 0.8em;
+    }
+    .sidebar-right .suggestions-section h3 {
+        font-size: 1.2em;
+    }
+    .user-card .profile-pic-small {
+        width: 28px;
+        height: 28px;
+    }
+    .user-card .username {
+        font-size: 0.85em;
+    }
+    .user-card .user-bio {
+        font-size: 0.7em;
+    }
+
+
+    /* Pages Amis, Messages, Notifications, Profil, Paramètres sur mobile */
+    .friends-page-container,
+    .messages-page-container,
+    .notifications-page-container,
+    .profile-page-container,
+    .settings-page-container {
+        padding: 15px;
+    }
+    h1 {
+        font-size: 1.7em;
+        margin-bottom: 20px;
+    }
+    h2 {
+        font-size: 1.4em;
+        margin-bottom: 15px;
+    }
+    h3 {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+
+    /* Messages sur mobile: bascule entre liste et chat */
+    .messages-grid {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+    .conversations-list-column {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 10px;
+        max-height: 180px; /* Réduit la hauteur max de la liste de conversations */
+    }
+    .chat-column {
+        min-height: 280px;
+    }
+    .conversations-list-column h2, .chat-column h2 {
+        font-size: 1em;
+        padding: 10px;
+    }
+    .conversation-item {
+        padding: 6px;
+        font-size: 0.85em;
+    }
+    .message-input-form {
+        padding: 8px;
+    }
+    .message-input-form textarea {
+        min-height: 30px;
+        padding: 6px 10px;
+    }
+    .message-input-form .send-message-button {
+        width: 32px;
+        height: 32px;
+        font-size: 1em;
+    }
+
+    /* Notifications sur mobile */
+    .notification-item .notification-actions .button {
+        padding: 4px 6px;
+        font-size: 0.7em;
+    }
+
+    /* Profil sur mobile */
+    .profile-page-container .profile-pic-large {
+        width: 70px;
+        height: 70px;
+    }
+    .profile-page-container h2 {
+        font-size: 1.5em;
+    }
+    .profile-page-container .profile-stats {
+        font-size: 0.85em;
+    }
+    .edit-profile-btn {
+        padding: 7px 12px;
+        font-size: 0.85em;
+    }
+
+    /* Paramètres sur mobile */
+    .settings-section h2 {
+        font-size: 1em;
+    }
+    .settings-form input,
+    .settings-form textarea,
+    .settings-form label,
+    .setting-action-button,
+    .theme-switcher .theme-button,
+    #logout-button-settings {
+        font-size: 0.85em;
+        padding: 8px;
+    }
+
+    /* Pied de page */
+    .main-footer {
+        padding: 10px 0;
+        font-size: 0.7em;
+    }
+}
+
+/* Pour les tablettes et les écrans intermédiaires */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        max-width: 900px;
+        padding: 0 15px;
+    }
+    .app-header {
+        padding: 10px 0;
+    }
+    .app-header .container {
+        gap: 15px;
+    }
+    .app-header .logo a {
+        font-size: 1.6em;
+    }
+    .header-main-nav .nav-button {
+        padding: 10px 18px;
+        font-size: 1.3em;
+        width: 55px; /* Ajuste légèrement la largeur des boutons */
+        height: 48px;
+    }
+    .nav-search {
+        max-width: 200px; /* Réduit un peu la recherche sur tablette */
+    }
+    .nav-search input {
+        font-size: 0.9em;
+    }
+    .profile-dropdown-container .profile-pic {
+        width: 35px;
+        height: 35px;
+    }
+    .profile-dropdown-menu {
+        min-width: 220px;
+    }
+    .profile-dropdown-menu .dropdown-item {
+        font-size: 0.95em;
+    }
+
+    body {
+        padding-top: 75px; /* Ajuste le padding top du body */
+    }
+    .main-content-wrapper {
+        padding: 20px 0;
+    }
+    .layout-grid {
+        grid-template-columns: 2.5fr 1.2fr;
+        gap: 20px;
+    }
+    .card {
+        padding: 18px;
+    }
+    .profile-pic-large {
+        width: 90px;
+        height: 90px;
+    }
+    h1 {
+        font-size: 1.9em;
+    }
+    h2 {
+        font-size: 1.6em;
+    }
+    h3 {
+        font-size: 1.4em;
+    }
+    .messages-grid {
+        grid-template-columns: 1fr 1.8fr;
+    }
+}
