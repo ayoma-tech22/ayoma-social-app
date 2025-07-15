@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Dans ce cas, on le redirige directement vers la page principale (/fil.html)
     const existingToken = localStorage.getItem('authToken');
     if (existingToken) {
-        console.log("connexion.js: Token existant détecté. Redirection vers /fil.html.");
-        window.location.href = '/fil.html';
+        console.log("connexion.js: Token existant détecté. Redirection vers https://ayoma-social-app.vercel.app/fil.html.");
+        window.location.href = 'https://ayoma-social-app.vercel.app/fil.html';
         return; // Arrête l'exécution du script pour éviter de montrer le formulaire de connexion
     }
 
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.location.href = redirectTo; // Redirige vers l'URL sauvegardée
                     } else {
                         // Si aucune URL n'a été sauvegardée, redirige par défaut vers le fil d'actualité
-                        window.location.href = '/fil.html';
+                        window.location.href = 'https://ayoma-social-app.vercel.app/fil.html';
                     }
 
                 } else { // Si la réponse HTTP indique une erreur (ex: 401 Unauthorized)
