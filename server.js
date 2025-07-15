@@ -8,6 +8,7 @@ const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const dotenv = require('dotenv');
 const fs = require('fs'); // Module pour la gestion des fichiers (lecture/écriture JSON)
+const cors = require('cors'); // Importation du module CORS <--- NOUVEAU
 
 // Charge les variables d'environnement du fichier .env
 dotenv.config();
@@ -57,6 +58,27 @@ let users = readDbFile(USERS_DB_PATH);
 let posts = readDbFile(POSTS_DB_PATH);
 
 // 2. Middleware
+const allowedOrigins = [
+    'http://localhost:5500', // Si vous testez en local avec Live Server ou similaire
+    'http://localhost:3000', // Si votre frontend tourne sur le même port que le backend en local
+    'https://ayoma-social-app.vercel.app', // Votre site déployé sur Vercel
+    'https://ayoma-social-app-git-main-ayoma-devs-projects.vercel.app', // Si vous avez d'autres branches déployées
+    'https://ayoma-social-app-***********.vercel.app' // Pour d'autres déploiements de Vercel (remplacez *** par les caractères réels si vous avez des URL de prévisualisation)
+];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        // Autorise les requêtes sans 'origin' (ex: Postman, requêtes du même domaine)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes HTTP autorisées
+    credentials: true // Important si vous utilisez des cookies ou des en-têtes d'autorisation (comme votre JWT)
+}));
 // Permet à Express de parser les requêtes JSON (pour POST /api/login, /api/register)
 app.use(express.json());
 
@@ -472,7 +494,7 @@ app.get('/api/users/:id/posts', authenticateToken, (req, res) => {
 
 // Route par défaut: redirige vers la page de connexion
 app.get('/', (req, res) => {
-    res.redirect('/connexion.html');
+    res.redirect('https://ayoma-social-app.vercel.app/connexion.html');
 });
 
 // Route catch-all pour les pages non trouvées
@@ -568,3 +590,5 @@ app.listen(PORT, () => {
         });
     }
 });
+
+
