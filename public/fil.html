@@ -25,7 +25,7 @@
                 <!-- Nouvelle section pour la navigation principale horizontale -->
                 <nav class="header-main-nav">
                     <button class="nav-button active" data-target="feed" title="Fil d'actualité">
-                        <i class="fa-solid fa-newspaper"></i>
+                        <i class="fa-solid fa-home"></i>
                     </button>
                     <button class="nav-button" data-target="friends" title="Amis">
                         <i class="fa-solid fa-user-group"></i>
@@ -253,14 +253,7 @@
 
         </main>
     </div>
-
-    <!-- Pied de page -->
-    <footer class="main-footer">
-        <div class="container">
-            <p>&copy; 2024 Ayoma. Tous droits réservés.</p>
-        </div>
-    </footer>
-
+  
     <!-- Votre script principal (doit être chargé en premier) -->
     <script src="/js/script.js"></script>
 
@@ -420,7 +413,7 @@
                 localStorage.removeItem('currentUser');
                 showMessage('Déconnexion effectuée ! Redirection...', 'success');
                 setTimeout(() => {
-                    window.location.href = '/connexion.html'; // Redirige vers la page de connexion
+                    window.location.href = 'https://ayoma-social-app.vercel.app/connexion.html'; // Redirige vers la page de connexion
                 }, 1500);
             };
 
@@ -518,3 +511,4 @@
     </script>
 </body>
 </html>
+
