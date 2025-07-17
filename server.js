@@ -129,7 +129,7 @@ const authenticateToken = (req, res, next) => {
 // 5. Routes API
 
 // Route d'inscription
-app.post('/api/register', async (req, res) => {
+app.post('https://ayoma-social-app.vercel.app/api/register', async (req, res) => {
     const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
@@ -181,7 +181,7 @@ app.post('/api/register', async (req, res) => {
 });
 
 // Route de connexion
-app.post('/api/login', async (req, res) => {
+app.post('https://ayoma-social-app.vercel.app/api/login', async (req, res) => {
     const { identifier, password } = req.body; // 'identifier' peut être username ou email
 
     if (!identifier || !password) {
@@ -224,13 +224,13 @@ app.post('/api/login', async (req, res) => {
 });
 
 // Route de déconnexion (principalement pour nettoyer le token côté client)
-app.post('/api/auth/logout', authenticateToken, (req, res) => {
+app.post('https://ayoma-social-app.vercel.app/api/auth/logout', authenticateToken, (req, res) => {
     console.log(`Utilisateur ${req.user.username} déconnecté.`);
     res.status(200).json({ message: 'Déconnexion réussie.' });
 });
 
 // Récupérer le profil de l'utilisateur connecté
-app.get('/api/users/me', authenticateToken, (req, res) => {
+app.get('https://ayoma-social-app.vercel.app/api/users/me', authenticateToken, (req, res) => {
     const userId = req.user.id;
     const user = users.find(u => u.id === userId);
 
@@ -253,7 +253,7 @@ app.get('/api/users/me', authenticateToken, (req, res) => {
 });
 
 // Récupérer tous les utilisateurs (pour les suggestions d'amis)
-app.get('/api/users', authenticateToken, (req, res) => {
+app.get('https://ayoma-social-app.vercel.app/api/users', authenticateToken, (req, res) => {
     // Ne renvoie pas le mot de passe ou d'autres infos sensibles
     const publicUsers = users.map(user => ({
         id: user.id,
@@ -268,7 +268,7 @@ app.get('/api/users', authenticateToken, (req, res) => {
 });
 
 // Mettre à jour le profil de l'utilisateur (bio et photo)
-app.put('/api/users/me', authenticateToken, upload.single('profilePic'), (req, res) => {
+app.put('https://ayoma-social-app.vercel.app/api/users/me', authenticateToken, upload.single('profilePic'), (req, res) => {
     const userId = req.user.id;
     const userIndex = users.findIndex(u => u.id === userId);
 
@@ -305,7 +305,7 @@ app.put('/api/users/me', authenticateToken, upload.single('profilePic'), (req, r
 });
 
 // Suivre/Ne plus suivre un utilisateur
-app.post('/api/users/:id/follow', authenticateToken, (req, res) => {
+app.post('https://ayoma-social-app.vercel.app/api/users/:id/follow', authenticateToken, (req, res) => {
     const targetUserId = req.params.id; // L'utilisateur à suivre/ne plus suivre
     const currentUserId = req.user.id; // L'utilisateur connecté
 
@@ -352,7 +352,7 @@ app.post('/api/users/:id/follow', authenticateToken, (req, res) => {
 
 
 // Récupérer les publications (fil d'actualité)
-app.get('/api/posts', authenticateToken, (req, res) => {
+app.get('https://ayoma-social-app.vercel.app/api/posts', authenticateToken, (req, res) => {
     // Tri par date de création (du plus récent au plus ancien)
     const sortedPosts = [...posts].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
@@ -360,7 +360,7 @@ app.get('/api/posts', authenticateToken, (req, res) => {
 });
 
 // Créer une nouvelle publication
-app.post('/api/posts', authenticateToken, upload.single('media'), (req, res) => {
+app.post('https://ayoma-social-app.vercel.app/api/posts', authenticateToken, upload.single('media'), (req, res) => {
     const { content } = req.body;
     const authorId = req.user.id; // ID de l'utilisateur connecté
     let author = users.find(u => u.id === authorId);
@@ -401,7 +401,7 @@ app.post('/api/posts', authenticateToken, upload.single('media'), (req, res) => 
 });
 
 // Liker une publication
-app.post('/api/posts/:id/like', authenticateToken, (req, res) => {
+app.post('https://ayoma-social-app.vercel.app/api/posts/:id/like', authenticateToken, (req, res) => {
     const postId = req.params.id;
     const userId = req.user.id;
 
@@ -432,7 +432,7 @@ app.post('/api/posts/:id/like', authenticateToken, (req, res) => {
 });
 
 // Route pour ajouter un commentaire à une publication
-app.post('/api/posts/:id/comments', authenticateToken, (req, res) => {
+app.post('https://ayoma-social-app.vercel.app/api/posts/:id/comments', authenticateToken, (req, res) => {
     const postId = req.params.id;
     const { content } = req.body;
     const userId = req.user.id;
@@ -470,7 +470,7 @@ app.post('/api/posts/:id/comments', authenticateToken, (req, res) => {
 });
 
 // Route pour récupérer les commentaires d'une publication
-app.get('/api/posts/:id/comments', authenticateToken, (req, res) => {
+app.get('https://ayoma-social-app.vercel.app/ap/posts/:id/comments', authenticateToken, (req, res) => {
     const postId = req.params.id;
     const post = posts.find(p => p.id === postId);
 
@@ -484,7 +484,7 @@ app.get('/api/posts/:id/comments', authenticateToken, (req, res) => {
 });
 
 // Récupérer les publications d'un utilisateur spécifique
-app.get('/api/users/:id/posts', authenticateToken, (req, res) => {
+app.get('https://ayoma-social-app.vercel.app/api/users/:id/posts', authenticateToken, (req, res) => {
     const userId = req.params.id;
     const userPosts = posts.filter(p => p.authorId === userId)
                            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
