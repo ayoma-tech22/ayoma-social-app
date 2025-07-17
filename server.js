@@ -129,7 +129,7 @@ const authenticateToken = (req, res, next) => {
 // 5. Routes API
 
 // Route d'inscription
-app.post('https://ayoma-social-app.vercel.app/api/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
     const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
