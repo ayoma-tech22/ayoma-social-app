@@ -49,7 +49,7 @@ const writeDbFile = (filePath, data) => {
 app.use(cors({
     origin: [
         'http://localhost:3000',
-        'https://ayoma-social-app.vercel.app'
+       'https://ayoma-social-9u7if36tr-ayoma-tech22s-projects.vercel.app'
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
