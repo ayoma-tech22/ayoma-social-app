@@ -503,11 +503,19 @@ app.get('*', (req, res) => {
 });
 
 
-// 6. Démarrage du serveur
+// Remplacez cette partie :
 app.listen(PORT, () => {
-    console.log(`Serveur Ayoma démarré sur http://localhost:${PORT}`);
-    console.log(`Accédez à l'application via http://localhost:${PORT}/connexion.html`);
-    console.log(`Clé secrète JWT utilisée: ${JWT_SECRET ? 'Oui' : 'Non (attention!)'}`);
+  console.log(`Serveur démarré sur le port ${PORT}`);
+});
+
+// Par ceci :
+if (require.main === module) {
+  // Mode standalone (pour tests locaux)
+  app.listen(PORT, () => console.log(`Local: http://localhost:${PORT}`));
+} else {
+  // Mode Serverless (pour Vercel)
+  module.exports = app;
+}
 
     // Simulation de quelques données initiales SEULEMENT si les fichiers sont vides
     if (users.length === 0) {
