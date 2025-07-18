@@ -297,7 +297,7 @@ async function loadUserProfileData(targetLocation = 'main') {
             setTimeout(() => {
                 localStorage.removeItem('authToken');
                 localStorage.removeItem('currentUser');
-                window.location.href = 'https://ayoma-social-app.vercel.app/connexion.html';
+                window.location.href = '/connexion.html';
             }, 2000);
         }
     }
